@@ -19,11 +19,10 @@ import org.springframework.data.annotation.Id;
  * @author Simon Zambrovski
  * 
  */
-//@Entity
-//@Table(name = "interval_measurement")
-//@NamedQuery(name = Interval.LAST_TWO, query = "select i from Interval as i order by i.end desc")
+@Entity
+@Table(name = "interval_measurement")
+@NamedQuery(name = Interval.LAST_TWO, query = "select i from Interval as i order by i.end desc")
 public class Interval {
-/*
     public final static String LAST_TWO = "Interval.lastTwo";
     private final static SimpleDateFormat SDF = new SimpleDateFormat();
 
@@ -88,5 +87,4 @@ public class Interval {
         final Date endD = new Date(end);
         return "Interval [sensorId=" + sensorId + ", start=" + SDF.format(startD) + ", end=" + SDF.format(endD) + "]";
     }
-*/
 }
