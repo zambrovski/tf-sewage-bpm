@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:camunda_1="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="Definitions_1" exporter="camunda modeler" exporterVersion="2.7.0" targetNamespace="http://bpmn.io/schema/bpmn">
-  <bpmn:process id="tf-sewage-bpm" isExecutable="true">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="Definitions_1" exporter="camunda modeler" exporterVersion="2.7.0" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="tf-sewage" name="TF Sewage" isExecutable="true">
     <bpmn:startEvent id="start">
       <bpmn:outgoing>SequenceFlow_1lwx0nm</bpmn:outgoing>
     </bpmn:startEvent>
@@ -10,49 +10,49 @@
       <bpmn:outgoing>SequenceFlow_092z3g4</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_1lwx0nm" sourceRef="start" targetRef="ExclusiveGateway_1un2cgd"/>
-    <bpmn:sequenceFlow id="SequenceFlow_092z3g4" sourceRef="ExclusiveGateway_1un2cgd" targetRef="EventBasedGateway_1xqk34b"/>
-    <bpmn:eventBasedGateway id="EventBasedGateway_1xqk34b">
+    <bpmn:sequenceFlow id="SequenceFlow_092z3g4" sourceRef="ExclusiveGateway_1un2cgd" targetRef="event_gateway"/>
+    <bpmn:eventBasedGateway id="event_gateway">
       <bpmn:incoming>SequenceFlow_092z3g4</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1qudulg</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0wgfgf6</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0u0cf2u</bpmn:outgoing>
     </bpmn:eventBasedGateway>
-    <bpmn:intermediateCatchEvent id="receive_terminate" name="Terminate&#xA;received">
+    <bpmn:intermediateCatchEvent id="message_terminate" name="Terminate&#xA;received">
       <bpmn:incoming>SequenceFlow_1qudulg</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0vz4pkg</bpmn:outgoing>
       <bpmn:messageEventDefinition messageRef="Message_1"/>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1qudulg" sourceRef="EventBasedGateway_1xqk34b" targetRef="receive_terminate"/>
+    <bpmn:sequenceFlow id="SequenceFlow_1qudulg" sourceRef="event_gateway" targetRef="message_terminate"/>
     <bpmn:endEvent id="end" name="Finished">
       <bpmn:incoming>SequenceFlow_0vz4pkg</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0vz4pkg" sourceRef="receive_terminate" targetRef="end"/>
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1rbarhs" name="Interval&#xA;received">
+    <bpmn:sequenceFlow id="SequenceFlow_0vz4pkg" sourceRef="message_terminate" targetRef="end"/>
+    <bpmn:intermediateCatchEvent id="interval_signal" name="Interval&#xA;received">
       <bpmn:incoming>SequenceFlow_0wgfgf6</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0fwlvjh</bpmn:outgoing>
       <bpmn:signalEventDefinition signalRef="Signal_1"/>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0wgfgf6" sourceRef="EventBasedGateway_1xqk34b" targetRef="IntermediateCatchEvent_1rbarhs"/>
+    <bpmn:sequenceFlow id="SequenceFlow_0wgfgf6" sourceRef="event_gateway" targetRef="interval_signal"/>
     <bpmn:intermediateCatchEvent id="interval_timer" name="Interval&#xA;missed">
       <bpmn:incoming>SequenceFlow_0u0cf2u</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1e6toe7</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">#{intervalTimer}</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">#{intervalTimer.interval}</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0u0cf2u" sourceRef="EventBasedGateway_1xqk34b" targetRef="interval_timer"/>
+    <bpmn:sequenceFlow id="SequenceFlow_0u0cf2u" sourceRef="event_gateway" targetRef="interval_timer"/>
     <bpmn:sequenceFlow id="SequenceFlow_1e6toe7" sourceRef="interval_timer" targetRef="send_alarm_missed"/>
-    <bpmn:sendTask id="send_alarm_missed" camunda:delegateExpression="#{sendAlarm}" camunda_1:delegateExpression="#{sendAlarm}" name="Send&#xA;alarm">
+    <bpmn:sendTask id="send_alarm_missed" camunda:delegateExpression="#{sendAlarm}" name="Send&#xA;alarm">
       <bpmn:incoming>SequenceFlow_1e6toe7</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_04soufo</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0fwlvjh" sourceRef="IntermediateCatchEvent_1rbarhs" targetRef="service_persist"/>
-    <bpmn:serviceTask id="service_persist" camunda:asyncBefore="true" camunda:delegateExpression="#{persist}" camunda_1:delegateExpression="#{persistInterval}" name="Persist&#xA;interval">
+    <bpmn:sequenceFlow id="SequenceFlow_0fwlvjh" sourceRef="interval_signal" targetRef="service_persist"/>
+    <bpmn:serviceTask id="service_persist" camunda:asyncBefore="true" camunda:delegateExpression="#{persistInterval}" name="Persist&#xA;interval">
       <bpmn:incoming>SequenceFlow_0fwlvjh</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0p5f7iu</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0p5f7iu" sourceRef="service_persist" targetRef="service_analyse"/>
-    <bpmn:serviceTask id="service_analyse" camunda:delegateExpression="analyse" camunda_1:delegateExpression="#{analysetInterval}" name="Analyse&#xA;interval">
+    <bpmn:serviceTask id="service_analyse" camunda:delegateExpression="#{analyseInterval}" name="Analyse&#xA;interval">
       <bpmn:incoming>SequenceFlow_0p5f7iu</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1xs5flg</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -65,7 +65,7 @@
     <bpmn:sequenceFlow id="violation_yes" name="yes" sourceRef="violations" targetRef="send_alarm_violation">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{violationDetected}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sendTask id="send_alarm_violation" camunda:delegateExpression="#{sendAlarm}" camunda_1:delegateExpression="#{sendAlarm}" name="Send&#xA;alarm">
+    <bpmn:sendTask id="send_alarm_violation" camunda:delegateExpression="#{sendAlarm}" name="Send&#xA;alarm">
       <bpmn:incoming>violation_yes</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0urfpqn</bpmn:outgoing>
     </bpmn:sendTask>
@@ -80,10 +80,10 @@
     <bpmn:sequenceFlow id="SequenceFlow_0fzqed6" sourceRef="ExclusiveGateway_09vm7jx" targetRef="ExclusiveGateway_1un2cgd"/>
     <bpmn:sequenceFlow id="SequenceFlow_04soufo" sourceRef="send_alarm_missed" targetRef="ExclusiveGateway_09vm7jx"/>
   </bpmn:process>
-  <bpmn:signal id="Signal_1" name="interval"/>
+  <bpmn:signal id="Signal_1" name="interval_received"/>
   <bpmn:message id="Message_1" name="terminate_message"/>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="tf-sewage-bpm">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="tf-sewage">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds height="36.0" width="36.0" x="163.0" y="301.0"/>
         <bpmndi:BPMNLabel>
@@ -110,13 +110,13 @@
           <dc:Bounds height="20.0" width="90.0" x="283.5" y="309.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EventBasedGateway_1xqk34b_di" bpmnElement="EventBasedGateway_1xqk34b">
+      <bpmndi:BPMNShape id="EventBasedGateway_1xqk34b_di" bpmnElement="event_gateway">
         <dc:Bounds height="50.0" width="50.0" x="356.0" y="294.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="20.0" width="90.0" x="336.0" y="344.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="IntermediateCatchEvent_1qlaxrh_di" bpmnElement="receive_terminate">
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_1qlaxrh_di" bpmnElement="message_terminate">
         <dc:Bounds height="36.0" width="36.0" x="446.0" y="404.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="20.0" width="90.0" x="419.0" y="440.0"/>
@@ -145,7 +145,7 @@
           <dc:Bounds height="20.0" width="90.0" x="480.0" y="383.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="IntermediateCatchEvent_1rbarhs_di" bpmnElement="IntermediateCatchEvent_1rbarhs">
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_1rbarhs_di" bpmnElement="interval_signal">
         <dc:Bounds height="36.0" width="36.0" x="446.0" y="301.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="20.0" width="90.0" x="419.0" y="337.0"/>

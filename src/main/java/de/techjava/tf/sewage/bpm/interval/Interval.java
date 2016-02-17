@@ -1,4 +1,4 @@
-package de.techjava.tf.sewage.persist.interval;
+package de.techjava.tf.sewage.bpm.interval;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +27,6 @@ public class Interval {
     private final static SimpleDateFormat SDF = new SimpleDateFormat();
 
     private long id;
-
     private long start;
     private long end;
     private String sensorId;

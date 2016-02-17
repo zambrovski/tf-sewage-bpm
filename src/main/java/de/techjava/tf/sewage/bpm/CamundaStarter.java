@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 public class CamundaStarter {
 
     public static void main(final String[] args) {
-        SpringApplication.run(StarterConfiguration.class, args);
+        SpringApplication.run(CamundaStarterConfiguration.class, args);
     }
 
 }
