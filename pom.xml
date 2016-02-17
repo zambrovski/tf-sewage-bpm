@@ -8,12 +8,12 @@
 	<packaging>jar</packaging>
 	<name>TF Sewage BPM</name>
 	<description>TinkerForge Sewage control process.</description>
-	<parent>
-		<groupId>de.techjava</groupId>
-		<artifactId>mqtt-camunda-bridge-parent</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
-		<relativePath />
-	</parent>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.3.1.RELEASE</version>
+    <relativePath />
+  </parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>de.techjava.tf.sewage.sense.CamundaStarter</start-class>
