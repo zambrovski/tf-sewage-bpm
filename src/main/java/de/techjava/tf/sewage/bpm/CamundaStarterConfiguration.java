@@ -20,7 +20,7 @@ import de.techjava.tf.sewage.bpm.interval.IntervalService;
 
 @Configuration
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackageClasses = IntervalService.class, entityManagerFactoryRef = "intervalEMFactory", transactionManagerRef = "intervalTxManager")
+//@EnableJpaRepositories(basePackageClasses = IntervalService.class, entityManagerFactoryRef = "intervalEMFactory", transactionManagerRef = "intervalTxManager")
 @ComponentScan(basePackageClasses = IntervalTimer.class)
 public class CamundaStarterConfiguration {
 
