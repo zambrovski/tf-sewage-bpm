@@ -8,11 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.Id;
-
 /**
  * Represents a time interval measured by a sensor.
  * 
@@ -26,9 +24,17 @@ public class Interval {
     public final static String LAST_TWO = "Interval.lastTwo";
     private final static SimpleDateFormat SDF = new SimpleDateFormat();
 
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "start_time")
+    @Basic(optional = false)
     private long start;
+    @Column(name = "stop_time")
     private long end;
+    @Column(name = "sensor_id")
+    @Basic(optional = false)
     private String sensorId;
 
     public Interval() {
@@ -41,26 +47,18 @@ public class Interval {
         this.sensorId = sensorId;
     }
 
-    @Column(name = "stop_time")
     public long getEnd() {
         return end;
     }
 
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
 
-    @Column(name = "sensor_id")
-    @Basic(optional = false)
     public String getSensorId() {
         return sensorId;
     }
 
-    @Column(name = "start_time")
-    @Basic(optional = false)
     public long getStart() {
         return start;
     }

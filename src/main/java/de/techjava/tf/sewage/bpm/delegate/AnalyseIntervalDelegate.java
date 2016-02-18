@@ -9,7 +9,7 @@ public class AnalyseIntervalDelegate implements JavaDelegate {
 
     @Override
     public void execute(final DelegateExecution delegateExecution) throws Exception {
-
+        delegateExecution.setVariable(SewageProcess.Variables.VIOLATION_DETECTED, true);
     }
 
 }

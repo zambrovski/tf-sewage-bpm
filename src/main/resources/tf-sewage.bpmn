@@ -80,7 +80,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0fzqed6" sourceRef="ExclusiveGateway_09vm7jx" targetRef="ExclusiveGateway_1un2cgd"/>
     <bpmn:sequenceFlow id="SequenceFlow_04soufo" sourceRef="send_alarm_missed" targetRef="ExclusiveGateway_09vm7jx"/>
   </bpmn:process>
-  <bpmn:signal id="Signal_1" name="interval_received"/>
+  <bpmn:signal id="Signal_1" name="pump/interval"/>
   <bpmn:message id="Message_1" name="terminate_message"/>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="tf-sewage">

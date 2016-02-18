@@ -18,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import de.techjava.tf.sewage.bpm.delegate.IntervalTimer;
+import de.techjava.tf.sewage.bpm.delegate.SewageProcess;
 
 public class SewageProcessTest {
 
@@ -52,8 +53,8 @@ public class SewageProcessTest {
     public void should_start_and_receive_signal() {
 
         DelegateExpressions.autoMock(SewageProcess.RESOURCE);
-        FluentJavaDelegateMock analyse_mock = DelegateExpressions.registerJavaDelegateMock(SewageProcess.Activites.ANALYSE_INTERVAL);
-        analyse_mock.onExecutionSetVariables(Variables.createVariables().putValue("violationDetected", false));
+        FluentJavaDelegateMock analyse_mock = DelegateExpressions.registerJavaDelegateMock(SewageProcess.Activites.ANALYSE_INTERVAL_EL);
+        analyse_mock.onExecutionSetVariables(Variables.createVariables().putValue(SewageProcess.Variables.VIOLATION_DETECTED, false));
         Mocks.register("intervalTimer", new IntervalTimer());
 
         final ProcessInstance instance = runtime.startProcessInstanceByKey(SewageProcess.KEY);
@@ -66,8 +67,8 @@ public class SewageProcessTest {
         management.executeJob(persistJob.getId());
         ProcessEngineAssertions.assertThat(instance).isWaitingAtExactly("event_gateway");
 
-        DelegateExpressions.verifyJavaDelegateMock(SewageProcess.Activites.ANALYSE_INTERVAL);
-        DelegateExpressions.verifyJavaDelegateMock(SewageProcess.Activites.PERSIST_INTERVAL);
+        DelegateExpressions.verifyJavaDelegateMock(SewageProcess.Activites.ANALYSE_INTERVAL_EL);
+        DelegateExpressions.verifyJavaDelegateMock(SewageProcess.Activites.PERSIST_INTERVAL_EL);
     }
 
 }
