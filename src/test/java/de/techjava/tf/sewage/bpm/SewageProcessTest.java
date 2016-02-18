@@ -60,7 +60,8 @@ public class SewageProcessTest {
         final ProcessInstance instance = runtime.startProcessInstanceByKey(SewageProcess.KEY);
         ProcessEngineAssertions.assertThat(instance).isWaitingAtExactly("event_gateway");
 
-        runtime.signalEventReceived("interval_received");
+        runtime.signalEventReceived("pump/interval");
+        
         ProcessEngineAssertions.assertThat(instance).isWaitingAtExactly("service_persist");
 
         Job persistJob = management.createJobQuery().active().singleResult();
